@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+   <title>疫情防控</title>
+   <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+   <link href="../static/css/main.css" rel="stylesheet"/>
+</head>
+<body>
+	<div id="title">全国疫情实时追踪</div>
+	<div id="time">我是时间</div>
+
+	<div id="l1">我是左1</div>
+	<div id="l2">我是左2</div>
+	<div id="c1">
+		<div class="num"><h1>123</h1></div>
+		<div class="num"><h1>123</h1></div>
+		<div class="num"><h1>123</h1></div>
+		<div class="num"><h1>123</h1></div>
+		<div class="txt"><h2>累计确诊</h2></div>
+		<div class="txt"><h2>剩余疑似</h2></div>
+		<div class="txt"><h2>累计治愈</h2></div>
+		<div class="txt"><h2>累计死亡</h2></div>
+
+	</div>
+	<div id="c2">我是中2</div>
+	<div id="r1">我是右1</div>
+	<div id="r2">我是右2</div>
+	<script>
+		function gettime(){
+			$.ajax({
+				url:"/time",
+//				dataType:'json',	//服务器返回json格式数据
+//				type:'post',		//HTTP请求类型
+				timeout:10000,		//超市时间设置10秒
+				success:function(data){
+					$("#time").html(data)		//获取服务器的时间
+				},
+				error:function(xhr,type,errorThrown){
+
+				}
+			});
+		}
+		function get_c1_data(){
+			$ajax({
+				url:"/c1",
+				success:function(data){
+					$("#num h1").eq(0).text(data.confirm)		//获取服务器的时间
+					$("#num h1").eq(1).text(data.suspect)		//获取服务器的时间
+					$("#num h1").eq(2).text(data.heal)		//获取服务器的时间
+					$("#num h1").eq(3).text(data.dead)		//获取服务器的时间
+				},
+				error:function(xhr,type,errorThrown){
+
+				}
+			})
+		}
+		setInterval(gettime,1000)
+		setInterval(get_c1_data,1000)
+
+	</script>
+</body>
+</html>
