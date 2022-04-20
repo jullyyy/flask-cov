@@ -3,7 +3,7 @@ import pymysql
 import string
 from jieba.analyse import extract_tags
 
-
+# 获取时间
 def get_time():
     time_str = time.strftime("%Y{}%m{}%d{} %X")
     return time_str.format("年", "月", "日")
@@ -15,6 +15,10 @@ def get_conn():
     :return: 连接，游标l
     """
     # 创建连接
+    # host 为数据库ip，如果使用云服务器，就填云服务器的ip，如果使用的是本地数据库，填localhost就可以
+    # user 为数据库的用户名
+    # password 为数据库密码
+    # db 所使用的数据库名称
     conn = pymysql.connect(host="localhost",
                            user="root",
                            password="root",
@@ -40,7 +44,7 @@ def query(sql, *args):
     '''
     conn, cursor = get_conn()
     cursor.execute(sql, args)
-    res = cursor.fetchall()  # 获取结果
+    res = cursor.fetchall()  # 获取所有结果
     close_conn(conn, cursor)
     return res
 
@@ -54,25 +58,9 @@ def get_c1_data():
           "where update_time=(select update_time from details order by update_time desc limit 1) "
 
     res = query(sql)
+    # 下一行是测试 不用管
     print(res, 88)
     return res[0]
-
-# def get_c1_data():
-#     """
-#     :return: 返回大屏div id=c1 的数据
-#     """
-#     # 因为会更新多次数据，取时间戳最新的那组数据
-#     sql = """
-#     SELECT total,total-heal-dead,heal,dead from (
-#     select sum(confirm) total,
-#     (SELECT heal from history ORDER BY ds desc LIMIT 1) heal ,
-#       sum(dead) dead
-#     from details where update_time=(
-#       select update_time from details order by update_time desc limit 1)
-#     ) d;
-#     """
-#     res = query(sql)
-#     return res[0]
 
 
 def get_c2_data():
@@ -124,11 +112,11 @@ def get_r1_data():
 
 
 def get_r2_data():
-    sql = "select content from jinri_hot order by id"
-
-    res = query(sql)
-    return res
-
+    sql = 'select content from ' \
+          '(select id,content from hotsearch order by id desc limit 30) as a ' \
+          'order by id asc'
+    #先取最后三十个（最新数据），再逆序输出（使热度高的在前）
+    return query(sql)
 
 from flask import jsonify
 
@@ -136,5 +124,5 @@ if __name__ == '__main__':
     # get_l1_data()
     # get_r1_data()
     # get_r2_data()
-    print(get_c1_data())
-    # pass
+    # print(get_r2_data())
+    pass

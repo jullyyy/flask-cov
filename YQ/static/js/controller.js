@@ -100,11 +100,7 @@ get_c2_data();
 get_l1_data();
 get_l2_data();
 get_r1_data();
-<<<<<<< HEAD
 get_r2_data();
-=======
-// get_r2_data();
->>>>>>> 676eda1 (second commit)
 
 setInterval(gettime,1000);
 setInterval(get_c1_data,1000*10);
@@ -112,8 +108,4 @@ setInterval(get_c2_data,10000*10);
 setInterval(get_l1_data,10000*10);
 setInterval(get_l2_data,10000*10);
 setInterval(get_r1_data,10000*10);
-<<<<<<< HEAD
 setInterval(get_r2_data,10000*10);
-=======
-// setInterval(get_r2_data,10000*10);
->>>>>>> 676eda1 (second commit)

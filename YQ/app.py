@@ -1,3 +1,6 @@
+from traceback import print_tb
+import requests
+import flask
 from flask import Flask
 from flask import render_template
 import utils
@@ -8,6 +11,11 @@ import simplejson
 
 app = Flask(__name__)
 
+
+@app.route('/ajaxtest',methods=["post"])
+def hello_world4():
+    name = requests.values.get("name")
+    return f"你好 {name}，服务器收到了ajax请求"
 
 
 @app.route('/')
@@ -28,6 +36,7 @@ def get_time():
 @app.route('/c1', methods=['get', 'post'])
 def get_c1_data():
     data = utils.get_c1_data()
+    # 这里是测试 不用管
     print(data, 999)
     return jsonify({
         "confirm": str(data[0]),
@@ -87,24 +96,27 @@ def get_r1_data():
     return jsonify({"city": city[0:5], "confirm": confirm[0:5]})
 
 
-# @app.route("/r2", methods=['get', 'post'])
-# def get_r2_data():
-#     data = utils.get_r2_data()
-#     d = []
-#     for i in data:
-#         k = i[0].rstrip(string.digits)  # 移除热搜数字,从右边
-#         v = i[0][len(k):]  # 获取关键字
-#         ks = extract_tags(k)  # 使用结巴提取关键字
-#         for j in ks:
-#             if not j.isdigit():
-#                 d.append({"name": j, "value": v})
+@app.route("/r2", methods=['get', 'post'])
+def get_r2_data():
+    data = utils.get_r2_data()
+    d = []
+    for i in data:
+        k = i[0].rstrip(string.digits)  # 移除热搜数字,从右边
+        v = i[0][len(k):]  # 获取关键字
+        ks = extract_tags(k)  # 使用结巴提取关键字
+        for j in ks:
+            if not j.isdigit():
+                d.append({"name": j, "value": v})
 
-#     return jsonify({"kws": d})
+    return jsonify({"kws": d})
 
 
 if __name__ == '__main__':
     # 不知道为啥 突然图表都不显示了 我把端口号和debug选项去掉就好了 好奇怪
     # port=7777, debug=True
     # app.run()
-    # app.run(port=6789,debug=True)
-    app.run(port=5050,debug=True)
+    # app.run(host="localhost",port=9876,debug=True)
+
+    app.run(port=6789,debug=True)
+    # app.run(port=5050,debug=True)
+    # print(get_r2_data())
