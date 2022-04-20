@@ -5,7 +5,7 @@ var ec_left1_option = {
 	title: {
 		text: "全国累计趋势",
 		textStyle: {
-			// color: 'white',
+			color: 'white',
 		},
 		left: 'left',
 	},
@@ -21,7 +21,10 @@ var ec_left1_option = {
 	},
 	legend: {
 		data: ['累计确诊', '现有疑似', "累计治愈", "累计死亡"],
-		left: "right"
+		left: "right",
+		textStyle: {
+            color: 'white'
+        }
 	},
 
 	//图形位置

@@ -1,6 +1,5 @@
 from traceback import print_tb
 import requests
-import flask
 from flask import Flask
 from flask import render_template
 import utils
@@ -8,6 +7,9 @@ from flask import jsonify
 from jieba.analyse import extract_tags
 import string
 import simplejson
+import threading
+
+from config import *
 
 app = Flask(__name__)
 
@@ -110,13 +112,30 @@ def get_r2_data():
 
     return jsonify({"kws": d})
 
+def cron_task():
+    from datetime import datetime
+    from time import sleep
+    from os import popen
+    print(f'定时任务开启，每{PAUSE}小时自动更新数据')
+    while True:
+        now = datetime.now()
+        if (now.hour % PAUSE) == 0 and now.minute == 0 and now.second == 0:
+            task = popen('python spider.py')
+            sleep(10)
+            result = task.read()
+            print(result)
+            task.close()
+            sleep(60 * 60 * 6 - 100)
+        sleep(0.8)
+
 
 if __name__ == '__main__':
-    # 不知道为啥 突然图表都不显示了 我把端口号和debug选项去掉就好了 好奇怪
-    # port=7777, debug=True
     # app.run()
-    # app.run(host="localhost",port=9876,debug=True)
-
-    app.run(port=6789,debug=True)
     # app.run(port=5050,debug=True)
     # print(get_r2_data())
+    threading.Thread(target=cron_task).start()
+    # 服务器部署
+    # app.run(host="0.0.0.0",port=PORT,debug=True)
+    # 本地部署
+    app.run(port=PORT,debug=True)
+    
