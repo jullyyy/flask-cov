@@ -46,9 +46,9 @@ def get_conn():
     :return: 连接，游标l
     """
     # 创建连接
-    db = pymysql.connect(host="localhost",
-                           user="root",
-                           password="root",
+    db = pymysql.connect(host="47.100.91.211",
+                           user="ali9yun_xyz",
+                           password="hjl",
                            db="cov",
                            charset="utf8")
     # 创建游标

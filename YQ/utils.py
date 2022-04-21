@@ -19,9 +19,9 @@ def get_conn():
     # user 为数据库的用户名
     # password 为数据库密码
     # db 所使用的数据库名称
-    conn = pymysql.connect(host="localhost",
-                           user="root",
-                           password="root",
+    conn = pymysql.connect(host="47.100.91.211",
+                           user="ali9yun_xyz",
+                           password="hjl",
                            db="cov",
                            charset="utf8")
     # 创建游标
