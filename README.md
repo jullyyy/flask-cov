@@ -6,7 +6,7 @@
 
 ## 效果图
 
-![](C:\Users\86132\Desktop\flask-cov效果图.png)
+![](YQ/flask-cov效果图.png)
 
 ### 安装使用
 
